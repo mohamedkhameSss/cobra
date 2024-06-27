@@ -59,7 +59,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        "fade-in":{
+        'fade-in':{
           from:{
             opacity:'0'
           },
@@ -82,8 +82,8 @@ const config = {
         }
       },
       animation: {
-        'animation':'marquee var(--marquee-duration) linear infinite',
-        'fade-in':"fade-in 0.5s linear forwards",
+        marquee:'marquee var(--marquee-duration) linear infinite',
+        'fade-in':'fade-in 0.5s linear forwards',
         flashing: 'flashing 1.4s infinite linear',
         // "accordion-down": "accordion-down 0.2s ease-out",
         // "accordion-up": "accordion-up 0.2s ease-out",
