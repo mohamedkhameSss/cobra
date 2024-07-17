@@ -72,6 +72,10 @@ const config = {
             transform: 'translateY(-50%)',
           },
         },
+        flashing:{
+          '0%':{opacity:'0.2'},
+          '20%':{opacity:'1'}
+        }
       
       },
       animation: {
