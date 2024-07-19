@@ -15,15 +15,15 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import LoginModal from "@/components/LoginModal";
-const DesignPreview = (configuration: { configration: Configuration }) => {
+const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const router = useRouter();
   const { toast } = useToast();
-  const { id } = configuration.configration;
+  const { id } = configuration;
   const { user } = useKindeBrowserClient();
   const [showConfetti, setShowConfetti] = useState(false);
   const [isLoginModelOpen, setIsLoginModelOpen] = useState<boolean>(false);
   useEffect(() => setShowConfetti(true));
-  const { color, model, finish, material } = configuration.configration;
+  const { color, model, finish, material } = configuration;
   const tw = COLORS.find(
     (supportedcolor) => supportedcolor.value === color
   )?.tw;
@@ -79,7 +79,7 @@ const DesignPreview = (configuration: { configration: Configuration }) => {
         <div className='sm:col-span-4 md:col-span-3 md:row-span-2 md:row-end-2'>
           <Phone
             className={`bg-${tw}`}
-            imgSrc={configuration.configration.croppedImageUrl!}
+            imgSrc={configuration.croppedImageUrl!}
           />
         </div>
         <div className='mt-5 sm:col-span-9 sm:mt-0 md:row-end-1'>

@@ -18,6 +18,6 @@ const Page = async ({ searchParams }: PageProps) => {
   if (!configuration) {
     return notFound();
   }
-  return <DesignPreview configration={configuration} />;
+  return <DesignPreview configuration={configuration} />;
 };
 export default Page;
