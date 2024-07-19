@@ -1,22 +1,23 @@
-'use client'
+"use client";
 
-import { useQuery } from '@tanstack/react-query'
-import { getPaymentStatus } from './actions'
-import { useSearchParams } from 'next/navigation'
-import { Loader2 } from 'lucide-react'
-import PhonePreview from '@/components/PhonePreview'
-import { formatPrice } from '@/lib/utils'
+import { useQuery } from "@tanstack/react-query";
+import { getPaymentStatus } from "./actions";
+import { useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import PhonePreview from "@/components/PhonePreview";
+import { formatPrice } from "@/lib/utils";
 
 const ThankYou = () => {
-  const searchParams = useSearchParams()
-  const orderId = searchParams.get('orderId') || ''
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get("orderId") || "";
 
   const { data } = useQuery({
-    queryKey: ['get-payment-status'],
+    queryKey: ["get-payment-status"],
     queryFn: async () => await getPaymentStatus({ orderId }),
     retry: true,
     retryDelay: 500,
-  })
+  });
+  console.log(data);
 
   if (data === undefined) {
     return (
@@ -27,7 +28,7 @@ const ThankYou = () => {
           <p>This won't take long.</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (data === false) {
@@ -39,11 +40,11 @@ const ThankYou = () => {
           <p>This might take a moment.</p>
         </div>
       </div>
-    )
+    );
   }
 
-  const { configuration, BillingAdress, shippingAddress, amount } = data
-  const { color } = configuration
+  const { configuration, BillingAdress, shippingAddress, amount } = data;
+  const { color } = configuration;
 
   return (
     <div className='bg-white'>
@@ -143,7 +144,7 @@ const ThankYou = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ThankYou
+export default ThankYou;
