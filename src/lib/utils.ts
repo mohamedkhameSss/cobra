@@ -40,5 +40,6 @@ export function constructMetadata({
       creator:'Mohamed Khamess'
     },
     icons,
+    metadataBase: new URL("https://cobra-gamma.vercel.app/")
    }
 }
