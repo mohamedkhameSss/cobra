@@ -23,7 +23,7 @@ const LoginModal = ({
         <DialogHeader>
           <div className='relative mx-auto w-24 h-24 mb-2'>
             <Image
-              src='/snake-1.png'
+              src='/snake-0.jpg'
               alt='snake image'
               className='object-contain'
               fill
