@@ -22,6 +22,10 @@ const nextConfig = {
         "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
     },
   ],
+  rewrites: {
+    source: "/api/:path*",
+    destination: "https://cobra-gamma.vercel.app/api/:path*", // Proxy to Backend
+  },
 };
 
 export default nextConfig;
