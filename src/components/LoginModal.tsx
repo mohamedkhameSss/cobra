@@ -36,7 +36,7 @@ const LoginModal = ({
             <span className='font-medium text-zinc-900'>
               Your configuration has been saved
             </span>
-            {""}
+            {" "}
             Please login or create an account to complete your purchase
           </DialogDescription>
         </DialogHeader>
