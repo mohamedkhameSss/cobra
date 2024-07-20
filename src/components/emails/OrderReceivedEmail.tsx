@@ -19,9 +19,13 @@ interface shippingAddressType {
   orderId: string;
   orderDate: string;
 }
-const OrderReceivedEmail = ({ shippingAddress,orderDate,orderId }: shippingAddressType) => {
+const OrderReceivedEmail = ({
+  shippingAddress,
+  orderDate,
+  orderId,
+}: shippingAddressType) => {
   const baseUrl =
-    process.env.NODE_ENV !== "development"
+    process.env.NODE_ENV === "development"
       ? "https://localhost:3000"
       : "https://cobra-gamma.vercel.app";
   return (
@@ -71,17 +75,17 @@ const OrderReceivedEmail = ({ shippingAddress,orderDate,orderId }: shippingAddre
         </Section>
         <Hr style={global.hr} />
         <Section style={paddingY}>
-            <Row>
-                <Text style={{...footer.text,paddingTop:30,paddingBottom:30}}>
-                Please contact us if you have any questions. (If you reply to
-                    this email, we won't be able to see it.)
-                </Text>
-            </Row>
-            <Row>
-                <Text style={footer.text}>
-                    &copy;COBRa, Inc. All Rights Reseved
-                </Text>
-            </Row>
+          <Row>
+            <Text style={{ ...footer.text, paddingTop: 30, paddingBottom: 30 }}>
+              Please contact us if you have any questions. (If you reply to this
+              email, we won't be able to see it.)
+            </Text>
+          </Row>
+          <Row>
+            <Text style={footer.text}>
+              &copy;COBRa, Inc. All Rights Reseved
+            </Text>
+          </Row>
         </Section>
       </Container>
     </Html>
