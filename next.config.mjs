@@ -11,7 +11,10 @@ const nextConfig = {
   },
   headers: [
     { key: "Access-Control-Allow-Credentials", value: "true" },
-    { key: "Access-Control-Allow-Origin", value: "https://cobra-gamma.vercel.app" },
+    {
+      key: "Access-Control-Allow-Origin",
+      value: "https://cobra-gamma.vercel.app",
+    },
     {
       key: "Access-Control-Allow-Methods",
       value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
@@ -22,10 +25,6 @@ const nextConfig = {
         "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
     },
   ],
-  rewrites: {
-    source: "/api/:path*",
-    destination: "https://cobra-gamma.vercel.app/api/:path*", // Proxy to Backend
-  },
 };
 
 export default nextConfig;
