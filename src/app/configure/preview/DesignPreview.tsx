@@ -59,15 +59,14 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
-    createPaymentSession({ configId: id });
-    // if (user) {
-    //   // create payment session
-    //   createPaymentSession({ configId: id });
-    // } else {
-    //   // need to log in
-    //   localStorage.setItem("configurationId", id);
-    //   setIsLoginModalOpen(true);
-    // }
+    if (user) {
+      // create payment session
+      createPaymentSession({ configId: id });
+    } else {
+      // need to log in
+      localStorage.setItem("configurationId", id);
+      setIsLoginModalOpen(true);
+    }
   };
 
   return (
