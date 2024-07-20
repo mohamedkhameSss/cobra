@@ -1,76 +1,86 @@
-'use client'
+"use client";
 
-import Phone from '@/components/Phone'
-import { Button } from '@/components/ui/button'
-import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
-import { cn, formatPrice } from '@/lib/utils'
-import { COLORS, FINISHES, MODELS } from '@/validators/option-validator'
-import { Configuration } from '@prisma/client'
-import { useMutation } from '@tanstack/react-query'
-import { ArrowRight, Check } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import Confetti from 'react-dom-confetti'
-import { createCheckoutSession } from './actions'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/components/ui/use-toast'
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
-import LoginModal from '@/components/LoginModal'
+import Phone from "@/components/Phone";
+import { Button } from "@/components/ui/button";
+import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products";
+import { cn, formatPrice } from "@/lib/utils";
+import { COLORS, FINISHES, MODELS } from "@/validators/option-validator";
+import { Configuration } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import { ArrowRight, Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import Confetti from "react-dom-confetti";
+import { createCheckoutSession } from "./actions";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+// import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
+import LoginModal from "@/components/LoginModal";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
-  const router = useRouter()
-  const { toast } = useToast()
-  const { id } = configuration
-  const { user } = useKindeBrowserClient()
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
+const DesignPreview = async ({
+  configuration,
+}: {
+  configuration: Configuration;
+}) => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const { id } = configuration;
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  // const { user } = useKindeBrowserClient()
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
-  const [showConfetti, setShowConfetti] = useState<boolean>(false)
-  useEffect(() => setShowConfetti(true))
+  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  useEffect(() => setShowConfetti(true));
 
-  const { color, model, finish, material } = configuration
+  const { color, model, finish, material } = configuration;
 
-  const tw = COLORS.find((supportedColor) => supportedColor.value === color)?.tw
+  const tw = COLORS.find(
+    (supportedColor) => supportedColor.value === color
+  )?.tw;
 
   const { label: modelLabel } = MODELS.options.find(
     ({ value }) => value === model
-  )!
+  )!;
 
-  let totalPrice = BASE_PRICE
-  if (material === 'polycarbonate')
-    totalPrice += PRODUCT_PRICES.material.polycarbonate
-  if (finish === 'textured') totalPrice += PRODUCT_PRICES.finish.textured
+  let totalPrice = BASE_PRICE;
+  if (material === "polycarbonate")
+    totalPrice += PRODUCT_PRICES.material.polycarbonate;
+  if (finish === "textured") totalPrice += PRODUCT_PRICES.finish.textured;
 
   const { mutate: createPaymentSession } = useMutation({
-    mutationKey: ['get-checkout-session'],
+    mutationKey: ["get-checkout-session"],
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
-      if (url) router.push(url)
-      else throw new Error('Unable to retrieve payment URL.')
+      if (url) router.push(url);
+      else throw new Error("Unable to retrieve payment URL.");
     },
     onError: () => {
       toast({
-        title: 'Something went wrong',
-        description: 'There was an error on our end. Please try again.',
-        variant: 'destructive',
-      })
+        title: "Something went wrong",
+        description: "There was an error on our end. Please try again.",
+        variant: "destructive",
+      });
     },
-  })
+  });
 
   const handleCheckout = () => {
     if (user) {
       // create payment session
-      createPaymentSession({ configId: id })
+      createPaymentSession({ configId: id });
     } else {
       // need to log in
-      localStorage.setItem('configurationId', id)
-      setIsLoginModalOpen(true)
+      localStorage.setItem("configurationId", id);
+      setIsLoginModalOpen(true);
     }
-  }
+  };
 
   return (
     <>
       <div
         aria-hidden='true'
-        className='pointer-events-none select-none absolute inset-0 overflow-hidden flex justify-center'>
+        className='pointer-events-none select-none absolute inset-0 overflow-hidden flex justify-center'
+      >
         <Confetti
           active={showConfetti}
           config={{ elementCount: 200, spread: 90 }}
@@ -127,7 +137,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                   </p>
                 </div>
 
-                {finish === 'textured' ? (
+                {finish === "textured" ? (
                   <div className='flex items-center justify-between py-1 mt-2'>
                     <p className='text-gray-600'>Textured finish</p>
                     <p className='font-medium text-gray-900'>
@@ -136,7 +146,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                   </div>
                 ) : null}
 
-                {material === 'polycarbonate' ? (
+                {material === "polycarbonate" ? (
                   <div className='flex items-center justify-between py-1 mt-2'>
                     <p className='text-gray-600'>Soft polycarbonate material</p>
                     <p className='font-medium text-gray-900'>
@@ -159,7 +169,8 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
             <div className='mt-8 flex justify-end pb-12'>
               <Button
                 onClick={() => handleCheckout()}
-                className='px-4 sm:px-6 lg:px-8'>
+                className='px-4 sm:px-6 lg:px-8'
+              >
                 Check out <ArrowRight className='h-4 w-4 ml-1.5 inline' />
               </Button>
             </div>
@@ -167,7 +178,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default DesignPreview
+export default DesignPreview;
