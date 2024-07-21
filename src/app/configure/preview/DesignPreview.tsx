@@ -26,6 +26,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   useEffect(() => setShowConfetti(true));
+  useEffect(() => console.log(user),[]);
 
   const { color, model, finish, material } = configuration;
 
@@ -63,7 +64,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
       // create payment session
       createPaymentSession({ configId: id });
       
-      console.log(user);
+      
     } else {
       // need to log in
       localStorage.setItem("configurationId", id);
