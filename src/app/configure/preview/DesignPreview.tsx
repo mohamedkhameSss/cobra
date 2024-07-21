@@ -62,7 +62,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     if (user) {
       // create payment session
       createPaymentSession({ configId: id });
-      localStorage.setItem("userId", user.id);
+      
       console.log(user);
     } else {
       // need to log in
