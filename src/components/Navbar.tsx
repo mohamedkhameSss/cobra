@@ -3,14 +3,14 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { LoginLink } from "@kinde-oss/kinde-auth-nextjs";
+
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 const Navbar = async () => {
-  const { getUser, isAuthenticated } = getKindeServerSession();
+  const { getUser } = getKindeServerSession();
   const user = await getUser();
   const isAdmin = user?.email === process.env.ADMIN_EMAIL;
-  console.log(user);
+  console.log(user + "vvvvvvvvvvvvvvvvvv");
 
   return (
     <nav
@@ -39,7 +39,7 @@ const Navbar = async () => {
                 >
                   Sign out
                 </Link>
-                {isAdmin ? (
+                {isAdmin && (
                   <Link
                     href='/dashboard'
                     className={buttonVariants({
@@ -49,7 +49,7 @@ const Navbar = async () => {
                   >
                     Dashoard ✨
                   </Link>
-                ) : null}
+                ) }
                 <Link
                   href='/configure/upload'
                   className={buttonVariants({
