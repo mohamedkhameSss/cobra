@@ -4,6 +4,7 @@ import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
 import { stripe } from '@/lib/stripe'
 import { Order } from '@prisma/client'
 import db from '@/db'
+import { authOptions } from '@/lib/providers'
 
 export const createCheckoutSession = async ({
   configId,
@@ -20,7 +21,7 @@ export const createCheckoutSession = async ({
   }
 
   
-   const user = await getCurrentUser()
+   const user = await getCurrentUser(authOptions)
 
   if (!user) {
     throw new Error('You need to be logged in')
