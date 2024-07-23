@@ -6,12 +6,16 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { SafeUser } from "../../types";
 import SignOutButton from "./SignOutButton";
 import SignInButton from "./SignInButton";
+import getCurrentUser from "@/app/auth-callback/action";
+import { authOptions } from "@/lib/providers";
 
 interface PropsType {
   currentUser?: SafeUser | null;
 }
-const Navbar = ({ currentUser }: PropsType) => {
+const Navbar = async () => {
+  const currentUser = await getCurrentUser(authOptions);
   const isAdmin = currentUser?.email === process.env.ADMIN_EMAIL;
+  console.log(currentUser + " is admin");
 
   return (
     <nav className='sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>

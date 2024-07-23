@@ -15,18 +15,19 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import getCurrentUser from "@/app/auth-callback/action";
 import LoginModal from "@/components/LoginModal";
+import { authOptions } from "@/lib/providers";
+import { useSession } from "next-auth/react";
 
-const DesignPreview =async ({ configuration }: { configuration: Configuration }) => {
+const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const router = useRouter();
   const { toast } = useToast();
   const { id } = configuration;
-
-  const currentUser=await getCurrentUser()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
+
+  const { data } = useSession();
+  const currentUser = data?.user;
   useEffect(() => setShowConfetti(true));
-  useEffect(() => console.log(currentUser),[]);
 
   const { color, model, finish, material } = configuration;
 
@@ -63,8 +64,6 @@ const DesignPreview =async ({ configuration }: { configuration: Configuration })
     if (currentUser) {
       // create payment session
       createPaymentSession({ configId: id });
-      
-      
     } else {
       // need to log in
       // localStorage.setItem("configurationId", id);
