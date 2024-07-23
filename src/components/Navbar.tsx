@@ -6,6 +6,10 @@ import { Button, buttonVariants } from "./ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { signIn, signOut } from "next-auth/react";
 import { SafeUser } from "../../types";
+import SignOutButton from "./SignOutButton";
+import SignInButton from "./signInButton";
+
+
 interface PropsType {
   currentUser?: SafeUser | null;
 }
@@ -22,15 +26,7 @@ const Navbar = ({ currentUser }: PropsType) => {
           <div className='h-full flex items-center space-x-4'>
             {currentUser ? (
               <>
-                <Button
-                  onClick={() => signOut()}
-                  className={buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })}
-                >
-                  Sign out
-                </Button>
+                <SignOutButton/>
                 {isAdmin ? (
                   <Link
                     href='/dashboard'
@@ -64,15 +60,7 @@ const Navbar = ({ currentUser }: PropsType) => {
                 >
                   Sign up
                 </Button> */}
-                <Button
-                  onClick={() => signIn("google")}
-                  className={buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })}
-                >
-                  Login
-                </Button>
+                <SignInButton variant="ghost"/>
                 <div className='h-8 w-px bg-zinc-200 hidden sm:block'></div>
                 <Link
                   href='/configure/upload'

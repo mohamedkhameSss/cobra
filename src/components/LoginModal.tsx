@@ -7,8 +7,9 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import Image from "next/image";
-import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
+
 import { buttonVariants } from "./ui/button";
+import SignInButton from "./signInButton";
 
 const LoginModal = ({
   isOpen,
@@ -35,18 +36,12 @@ const LoginModal = ({
           <DialogDescription className='text-base text-center py-2'>
             <span className='font-medium text-zinc-900'>
               Your configuration has been saved
-            </span>
-            {" "}
+            </span>{" "}
             Please login or create an account to complete your purchase
           </DialogDescription>
         </DialogHeader>
-        <div className='grid grid-cols-2 gap-6 divide-x divide-gray-200'>
-          <LoginLink className={buttonVariants({ variant: "outline" })}>
-            Login
-          </LoginLink>
-          <RegisterLink className={buttonVariants({ variant: "default" })}>
-            Sign Up
-          </RegisterLink>
+        <div className='grid grid-cols-1 gap-6 divide-x divide-gray-200'>
+          <SignInButton variant='outline' />
         </div>
       </DialogContent>
     </Dialog>
