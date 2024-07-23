@@ -7,9 +7,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import Image from "next/image";
-
-import { buttonVariants } from "./ui/button";
-import SignInButton from "./signInButton";
+import SignInButton from "./SignInButton";
 
 const LoginModal = ({
   isOpen,

@@ -1,14 +1,11 @@
-"use client";
 import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { signIn, signOut } from "next-auth/react";
 import { SafeUser } from "../../types";
 import SignOutButton from "./SignOutButton";
-import SignInButton from "./signInButton";
-
+import SignInButton from "./SignInButton";
 
 interface PropsType {
   currentUser?: SafeUser | null;
@@ -26,7 +23,7 @@ const Navbar = ({ currentUser }: PropsType) => {
           <div className='h-full flex items-center space-x-4'>
             {currentUser ? (
               <>
-                <SignOutButton/>
+                <SignOutButton />
                 {isAdmin ? (
                   <Link
                     href='/dashboard'
@@ -60,7 +57,7 @@ const Navbar = ({ currentUser }: PropsType) => {
                 >
                   Sign up
                 </Button> */}
-                <SignInButton variant="ghost"/>
+                <SignInButton variant='ghost' />
                 <div className='h-8 w-px bg-zinc-200 hidden sm:block'></div>
                 <Link
                   href='/configure/upload'

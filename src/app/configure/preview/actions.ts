@@ -1,26 +1,26 @@
-'use server'
 
+import getCurrentUser from '@/app/auth-callback/action'
 import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
-import { db } from '@/db'
 import { stripe } from '@/lib/stripe'
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { Order } from '@prisma/client'
+import db from '@/db'
 
 export const createCheckoutSession = async ({
   configId,
 }: {
   configId: string
 }) => {
-  const configuration = await db.configuration.findUnique({
-    where: { id: configId },
+  const configuration = await db?.configuration?.findUnique({
+    where:{id: configId}
   })
+  
 
   if (!configuration) {
     throw new Error('No such configuration found')
   }
 
-  const { getUser } = getKindeServerSession()
-   const user = await getUser()
+  
+   const user = await getCurrentUser()
 
   if (!user) {
     throw new Error('You need to be logged in')

@@ -70,10 +70,10 @@ export const authOptions:AuthOptions={
 pages:{
   signIn:"/"
 },
-// debug:process.env.NODE_ENV!=="production",
-// session:{
-//   strategy:"jwt"
-// },
+debug:process.env.NODE_ENV!=="production",
+session:{
+  strategy:"jwt"
+},
 
-// secret:process.env.NEXTAUTH_SECRET
+secret:process.env.NEXTAUTH_SECRET
 };
