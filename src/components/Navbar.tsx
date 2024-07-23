@@ -1,45 +1,37 @@
+"use client";
 import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-
-const Navbar = async () => {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  const isAdmin = user?.email === process.env.ADMIN_EMAIL;
-  console.log(user + "vvvvvvvvvvvvvvvvvv");
+import { signIn, signOut } from "next-auth/react";
+import { SafeUser } from "../../types";
+interface PropsType {
+  currentUser?: SafeUser | null;
+}
+const Navbar = ({ currentUser }: PropsType) => {
+  const isAdmin = currentUser?.email === process.env.ADMIN_EMAIL;
 
   return (
-    <nav
-      className='
-    sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200
-    bg-white/75 backdrop-blur-lg transition-all
-    '
-    >
+    <nav className='sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>
       <MaxWidthWrapper>
-        <div
-          className='flex h-14 items-center justify-between border-b border-zinc-200
-            '
-        >
+        <div className='flex h-14 items-center justify-between border-b border-zinc-200'>
           <Link href='/' className='flex z-40 font-semibold'>
             <span className='text-green-600'>COBRa</span>
           </Link>
           <div className='h-full flex items-center space-x-4'>
-            {user ? (
+            {currentUser ? (
               <>
-                <Link
-                  href='/api/auth/logout'
+                <Button
+                  onClick={() => signOut()}
                   className={buttonVariants({
                     size: "sm",
                     variant: "ghost",
                   })}
                 >
                   Sign out
-                </Link>
-                {isAdmin && (
+                </Button>
+                {isAdmin ? (
                   <Link
                     href='/dashboard'
                     className={buttonVariants({
@@ -49,7 +41,7 @@ const Navbar = async () => {
                   >
                     Dashoard ✨
                   </Link>
-                ) }
+                ) : null}
                 <Link
                   href='/configure/upload'
                   className={buttonVariants({
@@ -63,24 +55,24 @@ const Navbar = async () => {
               </>
             ) : (
               <>
-                <Link
-                  href='/api/auth/register'
+                {/* <Button
+                  onClick={()=>regi()}
                   className={buttonVariants({
                     size: "sm",
                     variant: "ghost",
                   })}
                 >
                   Sign up
-                </Link>
-                <Link
-                  href='/api/auth/login'
+                </Button> */}
+                <Button
+                  onClick={() => signIn("google")}
                   className={buttonVariants({
                     size: "sm",
                     variant: "ghost",
                   })}
                 >
                   Login
-                </Link>
+                </Button>
                 <div className='h-8 w-px bg-zinc-200 hidden sm:block'></div>
                 <Link
                   href='/configure/upload'

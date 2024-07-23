@@ -1,4 +1,4 @@
-import { db } from "@/db"
+import db  from "@/db"
 import { stripe } from "@/lib/stripe"
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
