@@ -58,7 +58,41 @@ export const authOptions:AuthOptions={
   //   },
   // }),
 ],
-
+callbacks: {
+ async jwt({ token, session, user }) {
+    // Persist the OAuth access_token and or the user id to the token right after signin
+    if (user) {
+      return {
+        ...session,
+        id:user.id
+      }
+    }
+    return token
+  },
+  async session({session,token,user}) {
+    console.log("callback session"+{session,token,user})
+    if (user) {
+      return {
+        ...session,
+        user:{
+          ...session.user,
+          id:token.id
+        }
+      }
+    }
+    return session;
+  }
+},
+  // session({ session, user }) {
+  //   // Check if JWT callback added custom data
+  //   // if (user.id) {
+  //   //   session.user.id = user.id;
+  //   // }
+  //   // if (token.accessToken) {
+  //   //   session.accessToken = token.accessToken;
+  //   // }
+  //   return user.id;
+  // },
 // debug:process.env.NODE_ENV!=="production",
 session:{
   strategy:"jwt"

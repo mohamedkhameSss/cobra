@@ -1,36 +1,30 @@
+'use server'
 
+import  db from '@/db'
+import { authOptions } from '@/lib/providers'
 
- 
-import  db  from "@/db";
-import { authOptions } from "@/lib/providers";
-import {getServerSession} from "next-auth/next"
+import { getServerSession } from 'next-auth'
 
-export async function getSession() {
-    return await getServerSession(authOptions)
-}
+export const getAuthStatus = async () => {
+  const  session  =await getServerSession(authOptions)
+  const user= session?.user
 
-export default async function getCurrentUser(authOptions: unknown) {
-    try{
-        const session =await getSession();
-        if(!session?.user?.email){
-            return null;
-        }
-        const currentUser =await db.user.findUnique({
-            where:{
-                email:session.user.email
-            }
-        })
-        if (!currentUser) {
-            return null;
-            
-        }
-        return {
-            ...currentUser,
-            createdAt: currentUser.createdAt.toISOString(),
-            updatedAt: currentUser.updatedAt.toISOString(),
-            emailVerified: currentUser.emailVerified?.toISOString() || null
-        };
-    }catch (error:any){
-        return null;
-    }
+  if ( !user?.email) {
+    throw new Error('Invalid user data')
+  }
+
+  const existingUser = await db.user.findFirst({
+    where: { email: user.email },
+  })
+
+  if (!existingUser) {
+    await db.user.create({
+      data: {
+        email: user.email,
+        id:user.id
+      },
+    })
+  }
+
+  return { success: true }
 }

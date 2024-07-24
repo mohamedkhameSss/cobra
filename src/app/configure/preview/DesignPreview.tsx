@@ -13,7 +13,7 @@ import Confetti from "react-dom-confetti";
 import { createCheckoutSession } from "./actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import getCurrentUser from "@/app/auth-callback/action";
+
 import LoginModal from "@/components/LoginModal";
 import { authOptions } from "@/lib/providers";
 import { useSession } from "next-auth/react";

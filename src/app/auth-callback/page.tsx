@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { getSession } from "./action";
+import { getAuthStatus } from "./action";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
@@ -17,7 +17,7 @@ const Page = () => {
   }, []);
   const { data, status } = useQuery({
     queryKey: ["auth-callback"],
-    queryFn: async () => await getSession(),
+    queryFn: async () => await getAuthStatus(),
     retry: true,
     retryDelay: 500,
   });

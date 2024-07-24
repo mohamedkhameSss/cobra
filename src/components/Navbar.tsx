@@ -6,15 +6,16 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { SafeUser } from "../../types";
 import SignOutButton from "./SignOutButton";
 import SignInButton from "./SignInButton";
-import getCurrentUser from "@/app/auth-callback/action";
+
 import { authOptions } from "@/lib/providers";
+import { getServerSession } from "next-auth";
 
 interface PropsType {
   currentUser?: SafeUser | null;
 }
 const Navbar = async () => {
-  const currentUser = await getCurrentUser(authOptions);
-  const isAdmin = currentUser?.email === process.env.ADMIN_EMAIL;
+  const currentUser = await getServerSession(authOptions);
+  const isAdmin = currentUser?.user?.email === process.env.ADMIN_EMAIL;
   console.log(currentUser + " is admin");
 
   return (

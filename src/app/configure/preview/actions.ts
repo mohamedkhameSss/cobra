@@ -1,15 +1,17 @@
 
-import getCurrentUser from '@/app/auth-callback/action'
 import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
 import { stripe } from '@/lib/stripe'
 import { Order } from '@prisma/client'
 import db from '@/db'
 import { authOptions } from '@/lib/providers'
+import { getServerSession } from 'next-auth'
 
 export const createCheckoutSession = async ({
   configId,
+
 }: {
   configId: string
+  
 }) => {
   const configuration = await db?.configuration?.findUnique({
     where:{id: configId}
@@ -21,9 +23,9 @@ export const createCheckoutSession = async ({
   }
 
   
-   const user = await getCurrentUser(authOptions)
+   const session = await getServerSession(authOptions)
 
-  if (!user) {
+  if (!session?.user) {
     throw new Error('You need to be logged in')
   }
 
@@ -38,12 +40,12 @@ export const createCheckoutSession = async ({
 
   const existingOrder = await db.order.findFirst({
     where: {
-      userId: user.id,
+      userId: session.user.id,
       configurationId: configuration.id,
     },
   })
 
-  console.log(user.id, configuration.id)
+  console.log( configuration.id)
 
   if (existingOrder) {
     order = existingOrder
@@ -51,7 +53,7 @@ export const createCheckoutSession = async ({
     order = await db.order.create({
       data: {
         amount: price / 100,
-        userId: user.id,
+        userId: session.user.id,
         configurationId: configuration.id,
       },
     })
@@ -73,7 +75,7 @@ export const createCheckoutSession = async ({
     mode: 'payment',
     shipping_address_collection: { allowed_countries: ['DE', 'US'] },
     metadata: {
-      userId: user.id,
+      userId: session.user.id,
       orderId: order.id,
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
