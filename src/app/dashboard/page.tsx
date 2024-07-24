@@ -20,12 +20,12 @@ import { cn, formatPrice } from "@/lib/utils";
 
 import { notFound } from "next/navigation";
 import StatusDropdown from "./StatusDropdown";
-import getCurrentUser from "../auth-callback/action";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/providers";
 
 const Page = async () => {
-  const user = await getCurrentUser(authOptions);
-
+  const session = await getServerSession(authOptions);
+  const user = session?.user
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
   if (!user || user.email !== ADMIN_EMAIL) {

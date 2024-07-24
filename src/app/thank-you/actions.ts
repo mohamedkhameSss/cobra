@@ -1,12 +1,13 @@
 "use server"
 
 import  db  from "@/db"
-import getCurrentUser from "../auth-callback/action"
-import { authOptions } from "@/lib/providers"
 
+import { authOptions } from "@/lib/providers"
+import { getServerSession } from "next-auth";
 
 export const getPaymentStatus = async ({orderId}:{orderId:string}) =>{
-    const user= await getCurrentUser(authOptions)
+    const session= await getServerSession(authOptions)
+    const user = session?.user
     
 
     if (!user?.id || !user.email) {

@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import Providers from "@/components/Providers";
 import { constructMetadata } from "@/lib/utils";
-import getCurrentUser from "./auth-callback/action";
+
 import { authOptions } from "@/lib/providers";
 import NextAuthProvider from "../../providers/NextAuthProvider";
 

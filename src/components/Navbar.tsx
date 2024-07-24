@@ -10,13 +10,11 @@ import SignInButton from "./SignInButton";
 import { authOptions } from "@/lib/providers";
 import { getServerSession } from "next-auth";
 
-interface PropsType {
-  currentUser?: SafeUser | null;
-}
+
 const Navbar = async () => {
-  const currentUser = await getServerSession(authOptions);
-  const isAdmin = currentUser?.user?.email === process.env.ADMIN_EMAIL;
-  console.log(currentUser + " is admin");
+  const session = await getServerSession(authOptions);
+  const isAdmin = session?.user?.email === process.env.ADMIN_EMAIL;
+  console.log(session + " is admin");
 
   return (
     <nav className='sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>
@@ -26,7 +24,7 @@ const Navbar = async () => {
             <span className='text-green-600'>COBRa</span>
           </Link>
           <div className='h-full flex items-center space-x-4'>
-            {currentUser ? (
+            {session ? (
               <>
                 <SignOutButton />
                 {isAdmin ? (
