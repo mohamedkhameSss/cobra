@@ -13,18 +13,25 @@ import Confetti from "react-dom-confetti";
 import { createCheckoutSession } from "./actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+
 import LoginModal from "@/components/LoginModal";
+import { authOptions } from "@/lib/providers";
+import { useSession } from "next-auth/react";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const router = useRouter();
   const { toast } = useToast();
   const { id } = configuration;
+<<<<<<< HEAD
 
   const { user,isAuthenticated } = useKindeBrowserClient();
+=======
+>>>>>>> 3d662cfbcd20407eeb1bac4ab8cde3f2ffe6c6d4
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
+
+  const { data } = useSession();
+  const currentUser = data?.user;
   useEffect(() => setShowConfetti(true));
 
   const { color, model, finish, material } = configuration;
@@ -59,12 +66,16 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
+<<<<<<< HEAD
     if (isAuthenticated) {
+=======
+    if (currentUser) {
+>>>>>>> 3d662cfbcd20407eeb1bac4ab8cde3f2ffe6c6d4
       // create payment session
       createPaymentSession({ configId: id });
     } else {
       // need to log in
-      localStorage.setItem("configurationId", id);
+      // localStorage.setItem("configurationId", id);
       setIsLoginModalOpen(true);
     }
   };
