@@ -20,48 +20,49 @@ export const createCheckoutSession = async ({
   }
 
   const { getUser } = getKindeServerSession()
-  const user = await getUser()
+   const user = await getUser()
 
   if (!user) {
     throw new Error('You need to be logged in')
   }
-
+  const existingUser= await db.user.findFirst({
+    where: {
+      id: user.id
+    }
+  })
+  if(user.email &&!existingUser){
+    await db.user.create({
+      data: {
+        id: user.id,
+        email:user.email
+      }
+    })
+  }
   const { finish, material } = configuration
 
   let price = BASE_PRICE
   if (finish === 'textured') price += PRODUCT_PRICES.finish.textured
-  if (material === 'polycarbonate') price += PRODUCT_PRICES.material.polycarbonate
-
-  // Ensure user exists before creating order
- const existingUser=await db.user?.findUnique({
-    where: { id: user.id },
-  })
-
-  if (user.email && !existingUser) {
-    await db.user.create({
-      data:{
-        email: user.email,
-        id:user.id,
-      }
-    })
-  }
+  if (material === 'polycarbonate')
+    price += PRODUCT_PRICES.material.polycarbonate
 
   let order: Order | undefined = undefined
 
-  const existingOrder = await db.order?.findFirst({
+  const existingOrder = await db.order.findFirst({
     where: {
       userId: user.id,
       configurationId: configuration.id,
     },
   })
 
+  console.log(user.id, configuration.id)
+
   if (existingOrder) {
     order = existingOrder
   } else {
-    order = await db.order?.create({
+    order = await db.order.create({
       data: {
-        userId: user.id,
         amount: price / 100,
+        userId: user.id,
         configurationId: configuration.id,
       },
     })

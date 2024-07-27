@@ -15,17 +15,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import db from "@/db";
+import { db } from "@/db";
 import { cn, formatPrice } from "@/lib/utils";
-
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { notFound } from "next/navigation";
 import StatusDropdown from "./StatusDropdown";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/providers";
 
 const Page = async () => {
-  const session = await getServerSession(authOptions);
-  const user = session?.user
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
   if (!user || user.email !== ADMIN_EMAIL) {
