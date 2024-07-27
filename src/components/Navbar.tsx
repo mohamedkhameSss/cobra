@@ -1,14 +1,23 @@
+"use client";
 import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { LoginLink } from "@kinde-oss/kinde-auth-nextjs";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  LoginLink,
+  useKindeBrowserClient,
+  LogoutLink,
+} from "@kinde-oss/kinde-auth-nextjs";
+// import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-const Navbar = async () => {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+const Navbar = () => {
+  const { isAuthenticated, getUser } = useKindeBrowserClient();
+
+  // useKindeBrowserClient()
+  const user = getUser();
+  console.log(user);
+  // const user = await getUser();
   const isAdmin = user?.email === process.env.ADMIN_EMAIL;
 
   return (
@@ -27,17 +36,18 @@ const Navbar = async () => {
             <span className='text-green-600'>COBRa</span>
           </Link>
           <div className='h-full flex items-center space-x-4'>
-            {user ? (
+            {isAuthenticated ? (
               <>
-                <Link
-                  href='/api/auth/logout'
+                <LogoutLink
+                  // href='/api/auth/logout'
+                  postLogoutRedirectURL='/'
                   className={buttonVariants({
                     size: "sm",
                     variant: "ghost",
                   })}
                 >
                   Sign out
-                </Link>
+                </LogoutLink>
                 {isAdmin ? (
                   <Link
                     href='/dashboard'
@@ -62,15 +72,16 @@ const Navbar = async () => {
               </>
             ) : (
               <>
-                <Link
-                  href='/api/auth/register'
+                <LoginLink
+                  // href='/api/auth/register'
+                  postLoginRedirectURL='/'
                   className={buttonVariants({
                     size: "sm",
                     variant: "ghost",
                   })}
                 >
                   Sign up
-                </Link>
+                </LoginLink>
                 <Link
                   href='/api/auth/login'
                   className={buttonVariants({
